@@ -1,0 +1,38 @@
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2012-11-16 10:46:58
+project --topLevelPackage fr.istic.vv.tp7 --projectName WebAppli --java 6 --packaging JAR
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2012-11-16 10:47:07
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2012-11-16 10:47:13
+hint
+jpa setup --database DERBY_EMBEDDED --provider HIBERNATE
+entity jpa --class ~.domain.Address --testAutomatically
+// [failed] script -- file logAddressBook.roo
+exit
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2012-11-16 11:04:14
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2012-11-16 11:04:30
+// [failed] script -- file C:\temp\VV TP 7-8\WebAppli\logAddressBook.roo
+jpa setup --database DERBY_EMBEDDED --provider HIBERNATE 
+entity jpa --class ~.domain.Address --testAutomatically
+field string --fieldName firstname
+field string --fieldName middlename
+field string --fieldName lastname
+field string --fieldName phone
+field string --fieldName email
+field string --fieldName address1
+field string --fieldName address2
+field string --fieldName city
+field string --fieldName addressState
+field string --fieldName postalCode
+field string --fieldName country
+controller scaffold --class ~.web.Controller --entity Address
+perform eclipse 
+perform package 
+perform clean 
+perform tests
+selenium test --controller ~.web.Controller
+perform package 
+perform clean
+// script --file "C:\temp\VV TP 7-8\WebAppli\logAddressBook.roo"
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2012-11-16 11:27:01
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2012-11-16 11:38:09
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2012-11-21 18:31:05
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2012-11-21 18:43:20

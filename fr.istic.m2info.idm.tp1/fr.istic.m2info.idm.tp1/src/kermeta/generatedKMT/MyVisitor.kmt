@@ -1,0 +1,43 @@
+package spreadsheet::visitors::concret;
+
+require kermeta
+require "spreadsheet_visitors.kmt"
+require "platform:/resource/fr.istic.m2info.idm.tp1/src/kermeta/helpers/helpers/EcoreDocHelper.kmt"
+
+using spreadsheet
+using spreadsheet::visitors
+using ecore
+
+class MyVisitor inherits Visitor {
+		method visitCell(v : Cell) : Void from Visitor
+		is do
+			stdio.writeln("Visiting Cell")
+			v.flat("")
+		end
+
+		method visitExpression(v : Expression) : Void from Visitor
+		is do
+			stdio.writeln("Visiting Expression")
+			v.flat("")
+		end
+
+		method visitBinExpression(v : BinExpression) : Void from Visitor
+		is do
+			stdio.writeln("Visiting BinExpression")
+			v.flat("")
+		end
+
+		method visitValue(v : Value) : Void from Visitor
+		is do
+			stdio.writeln("Visiting Value")
+			v.flat("")
+		end
+
+		method visitCellRef(v : CellRef) : Void from Visitor
+		is do
+			stdio.writeln("Visiting CellRef")
+			v.flat("")
+		end
+
+}
+

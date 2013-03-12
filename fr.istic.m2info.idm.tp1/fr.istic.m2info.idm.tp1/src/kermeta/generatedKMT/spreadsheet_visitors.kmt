@@ -1,0 +1,19 @@
+package spreadsheet::visitors;
+
+require "spreadsheet.kmt"
+require kermeta
+
+using spreadsheet
+
+abstract class Visitor {
+		operation visitCell(v : Cell) : Void is abstract
+		operation visitExpression(v : Expression) : Void is abstract
+		operation visitBinExpression(v : BinExpression) : Void is abstract
+		operation visitValue(v : Value) : Void is abstract
+		operation visitCellRef(v : CellRef) : Void is abstract
+}
+
+class Visitable {
+		operation accept(v : Visitor) : Void is abstract
+}
+

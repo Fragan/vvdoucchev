@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://initialization_rule/1.0.0"
+            class="initialization_rule.Initialization_rulePackage"
+            genModel="genmodel/initialization.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://rules_core/1.0"
+            class="rules_core.Rules_corePackage"
+            genModel="genmodel/initialization.genmodel"/>
+   </extension>
+
+</plugin>

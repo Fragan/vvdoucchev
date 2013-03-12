@@ -1,0 +1,79 @@
+Comment que ça marche xtext une fois qu'on a les metamodeles ?
+=> génrer un fichier emf generator
+ - clic droit sur ton dossier de métamodel
+ - new file
+ - tape : genmodel
+
+
+ - dans eclipse (celui qui contient le plugin xtext) clic droit sur le dossier de tes modeles
+ - new files
+ - others
+ - EMF Generator Model (file name must end in '.genmodel')
+ - type de model : "ecore"
+
+moi:  J'ai ma topologie genmodel
+ - click droit sur ton fichier ecore -> epackage registration
+ - clic droit sur ton projet
+ - configure
+ - convert to plugin project
+ - ouvre ton nouveau fichier gen model
+ - clic sur le 1er item et clic droit genereate all
+
+ - maintenant tu fais nouveau projet
+ - tapes xtext ds la recherche
+ - nouveau projet xtext from model
+ - fais add -> from workspace -> tu selectionnes ton genmodel
+ - dans entry rule tu selectionne ta classe principale
+ - suivant
+ - project name : dsl.cequetuveux
+ - Name : dsl.Cequetuveux (note la majuscule)
+ - Extensions: commetuveux c'est l'extension du fichier de ton programme
+ - finish
+
+moi:  j'ai le xtext et les editeurs
+ - ds ton projet (ni le sdk, ni les test ni lediteur)
+ - trouves le fichier .xtext
+ - run as -> generate artifacts
+ - clic droit sur le mm projet et run as eclipse
+
+ - créer un new projet Java
+ - crée un fichier vide avec l'extension que tu as choisi
+ - (tu devrais avoirs l'auto completion et la coloration syntaxique)
+ 
+Exemple pr la syntaxe :
+// Topology
+Topology {
+	neighborSize 4
+	dimensions {
+		isCircular
+		Dimension {
+			size 5
+		}
+	}
+}
+
+// Evolution
+Rule {
+	condition Max {
+		rhs Constant {
+			integerValue 5
+		}
+		lhs Constant {
+			integerValue 6
+		}
+	}
+}
+
+// Initialization
+Rule {
+	condition Minus {
+		rhs Constant {
+			integerValue 5
+		}
+		lhs Constant {
+			integerValue 6
+		}
+	}
+}
+
+=> Un problèmes ?? UNE solution : Tout éffacer pour tout (mieux ?) recommencer ^^

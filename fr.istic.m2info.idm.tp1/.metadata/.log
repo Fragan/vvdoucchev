@@ -1,0 +1,9 @@
+!SESSION 2012-10-15 19:15:14.384 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_35
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=fr_FR
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY fr.irisa.triskell.kermeta.kpm 2 2 2012-10-15 19:15:38.248
+!MESSAGE Failed to load existing kpm file, will re-initilize it

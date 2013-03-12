@@ -1,0 +1,33 @@
+Question 1 :
+Yeti arrête sa génération de valeur après une minute. Or, à ce stade, il n'a pu générer la valeur 1337. Il ne trouve donc aucune erreur.
+
+Question 2 :
+En implémentant une méthode qui retourne une valeur particulière d'un certain type (ici, 1337 : int), Yeti prend en compte cette valeur lorsqu'il génère des paramètres du même type.
+
+Question 3 :
+L'objet C n'est pas instancié dans la classe A au moment de l'éxécution du test et donc de l'appel à la méthode "A.useC()".
+
+Question 4 :
+En ajoutant une méthode dans le Helper retournant un objet de type Character, Yeti arrive à créer des instances de la class B et test ainsi les méthodes utilisant B.
+
+Question 5 :
+La méthode lève une NullPointerException et la remonte à ses méthodes appelante. Or, Yeti n'arrive pas à détecter les exeptions gérées ou remontées.
+
+Question 6 :
+En ajoutant l'argument permettant de prendre en considération les assertions, Yeti peut détecter qu'une assertion n'est pas valide.
+
+Question 7 :
+Yeti est trop COol :) En ajoutant une méthode dans le Helper retournant un objet de type voulu, Yeti arrive à créer de nouvelles instances de ces types et test ainsi les méthodes utilisant ce type.
+
+Question 8 :
+Yeti met en jaune lorsqu'il tue une méthode trop longue à exécuter.
+
+Question 9 :
+Yeti ne test pas de valeurs null si l'argument randomPlus n'est pas activé.
+
+Question 10 :
+Sans logs, Yeti génère environ 100 fois plus de valeurs.
+
+Question 11 :
+Cette méthode n'est point testée correctement par Yeti car il ne sait pas quelles chaines de caractères précises (longueur, etc.) il faut passer par le paramètre "command" pour matcher dans le swicth-case.
+

@@ -1,0 +1,146 @@
+/* $Id:$ 
+ * Creation : November 2, 2012
+ * Licence  : EPL 
+ * Copyright:
+ * Authors  : 
+ *            Slawek
+ */
+@mainClass "root_package::Main"
+@mainOperation "main"
+
+
+package root_package;
+
+require "helpers/helpers/EcoreUtil.kmt"
+require kermeta
+require "platform:/resource/fr.istic.m2gl.idm.projet/src/kermeta/printer/HTMLPrinter.kmt"
+
+using kermeta
+using EcoreUtil
+using ecore
+using kermeta::standard
+using kermeta::io
+
+class Main
+{
+	operation main() : Void is do 
+		var util : EcoreUtil init EcoreUtil.new
+		var monPackage:EPackage
+		monPackage := util.loadModel("platform:/resource/fr.istic.m2gl.idm.projet/metamodel/Projet.ecore") // Nom du fichier ecore sur lequel la doc est generee
+		
+		var path : String init "platform:/resource/fr.istic.m2gl.idm.projet/metamodel_Doc/"
+		
+		generate_index(path)
+		stdio.writeln("Index OK")
+		
+		generate_contents(path)
+		stdio.writeln("Contents OK")
+		
+		generate_toc(monPackage, path)
+		stdio.writeln("Table of content OK")
+		
+		
+		generate_class(monPackage, path)
+		stdio.writeln("Class doc OK")
+	end
+	
+	operation generate_index(path : String) : Void is do
+		// Buffer de sortie
+		var buffer : String init ""
+		
+		// Generation de l'entete du fichier
+		buffer.append("<frameset cols=\"20%,80%\">\n")
+        buffer.append("<frame src=\"toc.html\" name=\"TOC\" noresize>\n")
+        buffer.append("<frame src=\"contents.html\" name=\"EcoreDoc\" noresize>\n")
+		buffer.append("</frameset>")
+		
+		// Creation du fichier
+		var fichier : FileIO init FileIO.new
+		fichier.writeTextFile(path + "index.html" , buffer)
+	end
+	
+	operation generate_contents(path : String) : Void is do
+		// Buffer de sortie
+		var buffer : String init ""
+		
+		// Generation de l'entete du fichier
+		buffer.append("<html>\n")
+		buffer.append(" <body>\n")
+		buffer.append("  <h3>Documentation</h3>\n")
+		buffer.append("  Ladite documentation\n") // La documentation souhaitee
+		buffer.append(" </body>")
+		buffer.append("</html>")
+		
+		// Creation du fichier
+		var fichier : FileIO init FileIO.new
+		fichier.writeTextFile(path + "contents.html" , buffer)
+	end
+	
+	operation generate_toc(modele : EPackage, path : String) : Void is do
+		// Buffer de sortie
+		var buffer : String init ""
+		
+		// Generation de l'entete du fichier
+		buffer.append("<html>\n")
+		buffer.append(" <body>\n")
+		buffer.append("  <h3>Classes of " + modele.name + "</h3>\n")
+		//buffer.append("  <CENTER>\n")
+		
+		// Parours
+		modele.eClassifiers.select{ c | c.isKindOf(EClass) }.each{e |
+		do
+			var classCourante : EClass
+			classCourante ?= e
+			if (classCourante != void)
+			then
+				buffer.append(" <li><a href=\""+ classCourante.name +".html\" target=\"EcoreDoc\">\n")
+				buffer.append(" "+ classCourante.name +"\n")
+				buffer.append(" </a></li>\n")
+			end
+		end
+		}
+		
+		//buffer.append("  </CENTER>\n")
+		buffer.append(" </body>")
+		buffer.append("</html>")
+		
+		// Creation du fichier
+		var fichier : FileIO init FileIO.new
+		fichier.writeTextFile(path + "toc.html" , buffer)
+	end
+	
+	operation generate_class(modele : EPackage, path : String) : Void is do
+	
+		modele.eClassifiers.select{ s | s.isKindOf(EClass) }.each{ e |
+		do
+		
+			// Buffer de sortie
+			var buffer : String init ""
+			
+			// Generation de l'entete du fichier
+			buffer.append("<html>\n")
+			buffer.append("\t<body>\n")
+			buffer.append("\t\t<h3>Class " + e.name + "</h3>\n")
+			
+			
+			var classeCourante : EClass
+			classeCourante ?= e
+			if (classeCourante != void)
+			then
+				// Hiearchie de classes
+				buffer.append("\t\t" + classeCourante.flatHTTML("\t\t") + "\n")
+				
+				// Detail de la classe
+				buffer.append("\t\t<br\n\t\t><br>\n" + classeCourante.shortHTML("\t\t"))
+			end
+			
+			buffer.append(" </body>")
+			buffer.append("</html>")
+			
+			// Creation du fichier
+			var fichier : FileIO init FileIO.new
+			fichier.writeTextFile(path + classeCourante.name + ".html" , buffer)
+		end
+		}
+	end
+}

@@ -1,0 +1,31 @@
+Ordre de Yetissage :
+1 - YetiSquareHelper.java
+
+
+* Main.java :
+
+java.lang.NullPointerException
+ 	at run.Main.printBoard(Main.java:145)
+ 	at run.Main.<init>(Main.java:20)
+
+ java.lang.NullPointerException
+ 	at run.Main.getAlphaConversion(Main.java:74)
+ 
+ 
+* Square :
+ 
+ java.lang.NullPointerException
+ 	at material.Square.hashCode(Square.java:49)
+ 
+ 
+* Board :
+
+java.lang.NullPointerException
+ 	at material.Board.movePieceBack(Board.java:139)
+
+java.lang.NullPointerException
+ 	at material.Board.movePiece(Board.java:126)
+
+ 	
+* Piece :
+

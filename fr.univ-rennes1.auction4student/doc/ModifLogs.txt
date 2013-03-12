@@ -1,0 +1,5 @@
+Bid -> Add "this.auction = auction;" to constructor
+
+
+ServerImpl.createAuction(..) => erreur sémantique
+"ERROR: the end date must be greater than the start date" au lieu de "ERROR: the end date must be greater than the end date"

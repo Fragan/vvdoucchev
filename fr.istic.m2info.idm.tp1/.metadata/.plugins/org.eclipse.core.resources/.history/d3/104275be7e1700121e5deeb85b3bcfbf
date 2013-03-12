@@ -1,0 +1,21 @@
+/* $Id:$ 
+ * Creation : October 15, 2012
+ * Licence  : EPL 
+ * Copyright:
+ * Authors  : 
+ *            29001933
+ */
+@mainClass "root_package::Main"
+@mainOperation "main"
+
+
+package root_package;
+
+
+require kermeta
+class Main
+{
+	operation main() : Void is do 
+		stdio.writeln("Hello World !")
+	end
+}

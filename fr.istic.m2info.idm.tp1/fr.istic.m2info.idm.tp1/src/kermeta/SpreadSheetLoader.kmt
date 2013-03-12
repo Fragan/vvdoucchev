@@ -1,0 +1,317 @@
+/* $Id:$ 
+ * Creation : October 16, 2012
+ * Licence  : EPL 
+ * Copyright:
+ * Authors  : 
+ *            Slawek
+ */
+@mainClass "ecore::Main"
+@mainOperation "main"
+
+
+package ecore; // on se place dans le package ecore afin de pour utiliser static introduction (aspect)
+
+require "helpers/helpers/ecore_behavior.kmt" // import des getters
+require kermeta
+require "helpers/helpers/EcoreUtil.kmt"
+require "helpers/helpers/EcoreGenericsHelper.kmt"
+require "platform:/resource/fr.istic.m2info.idm.tp1/src/kermeta/helpers/helpers/EcoreDocHelper.kmt"
+//require "../../models/spreadsheet.ecore"
+
+using kermeta
+using EcoreUtil
+using ecore
+using kermeta::standard
+using kermeta::io
+
+class Main
+{
+	operation main() : Void is do
+		
+		var util : EcoreUtil init EcoreUtil.new
+		var monPackage:EPackage
+		monPackage := util.loadModel("../../models/spreadsheet.ecore")
+		
+		// FLAT
+		stdio.writeln("====== FLAT ======")
+		monPackage.eClassifiers.select{ c | c.isKindOf(EClass) }.each{e |
+		do
+			var classCourante : EClass
+			classCourante ?= e
+			if (classCourante != void)
+			then
+				stdio.writeln(classCourante.flat(""))
+				stdio.writeln("")
+			end
+		end
+		}
+		
+		// SHORT
+		stdio.writeln("====== SHORT ======")
+		monPackage.eClassifiers.select{ c | c.isKindOf(EClass) }.each{e |
+		do
+			var classCourante : EClass
+			classCourante ?= e
+			if (classCourante != void)
+			then
+				stdio.writeln(classCourante.short(""))
+			end
+		end
+		}
+		
+		// FLATSHORT
+		stdio.writeln("====== FLATSHORT ======")
+		monPackage.eClassifiers.select{ c | c.isKindOf(EClass) }.each{e |
+		do
+			var classCourante : EClass
+			classCourante ?= e
+			if (classCourante != void)
+			then
+				stdio.writeln(classCourante.flatshort(""))
+			end
+		end
+		}
+		
+		// ADD DATATYPE
+		stdio.writeln("====== ADD DATATYPE ======")
+		var typeInteger : EClassifier init monPackage.addDataType("Integer", "java.lang.Integer")
+		
+		// ADD ATTRIBUTE
+		stdio.writeln("====== ADD ATTRIBUTE ======")
+		var classValue : EClass
+		classValue ?= monPackage.getEClassifier("Value")
+		if (classValue != void)
+		then
+			classValue.addAttribute("val", typeInteger)
+		end
+		
+		// ADD OPERATION
+		stdio.writeln("====== ADD OPERATION ======")
+		stdio.writeln("Creation de getVal() : Integer")
+		classValue ?= monPackage.getEClassifier("Value")
+		if (classValue != void)
+		then
+			classValue.addOperation("getVal", typeInteger)
+		end
+		
+		stdio.writeln("Creation de setVal()")
+		var operationSetVal : EOperation
+		if (classValue != void)
+		then
+			var voidType : EClassifier init void // Type de retour = void
+			operationSetVal := classValue.addOperation("setVal", voidType)
+		end
+		
+		// ADD PARAMETERS
+		stdio.writeln("====== ADD PARAMETER ======")
+		stdio.writeln("Creation du parametre de setVal(val : Integer)")
+		operationSetVal.addParameter("val", typeInteger)
+		
+		// Sauvegarde du model
+		util.saveModel(monPackage, "../../models/tableur_modifie.ecore")
+		
+		// ADD VISITOR PATTERN
+		var monPackageVisitable : EPackage init generateVisitor(monPackage)
+		util.saveModel(monPackageVisitable, "../../models/tableur_visitable.ecore")
+		
+		// CREATE KMT FILES
+		var path : EString init "generatedKMT/"
+		generate_visitor(monPackage, path)
+		generate_concrete_visitor("MyVisitor", monPackage, path)
+		generate_aspects(monPackage, "../../../models/tableur_modifie.ecore", path)
+		
+	end
+	
+	operation name(path : String) : Void is do 
+		var util : EcoreUtil init EcoreUtil.new
+		var monPackage:EPackage
+		monPackage := util.loadModel(path)
+
+		stdio.writeln("Noms des classes :")
+		
+		// Pour chaque classe du package, on affiche son nom
+		monPackage.eClassifiers.each{ c |
+			stdio.writeln(c.name)
+		}
+	end
+	
+	operation generateVisitor(monPackage : EPackage) : EPackage is do
+		
+		var util : EcoreUtil init EcoreUtil.new
+		
+		// Creation du package Visitors
+		var visitorPackage : EPackage init creerPackage("Visitors", monPackage)
+		
+		// Creation de l'interface Visitable
+		var visitableInterface : EClass init EClass.new
+		visitableInterface.name := "Visitable"
+		visitableInterface.interface := true
+		visitorPackage.eClassifiers.add(visitableInterface)
+		
+		// Creation de la classe abstraite Visitor
+		var visitorAbstClass : EClass init EClass.new
+		visitorAbstClass.name := "Visitor"
+		visitorAbstClass.~abstract := true
+		visitorPackage.eClassifiers.add(visitorAbstClass)
+		
+		// Add operation Visitable.accept(Visitor v)
+		var visitableOp : EOperation init visitableInterface.addOperation("accept", void)
+		visitableOp.addParameter("v", visitorAbstClass)
+		
+		// Add operation Visitor.visit(Visitable v)
+		var visitorOp : EOperation init visitorAbstClass.addOperation("visit", void)
+		visitorOp.addParameter("v", visitableInterface)
+		
+		// Creation d'un visiteur concret MyVisitor
+		var concreteVisitor : EClass init EClass.new
+		concreteVisitor.name := "MyVisitor"
+		concreteVisitor.addSuperType(visitorAbstClass)
+		visitorPackage.eClassifiers.add(concreteVisitor)
+		
+		// Application du pattern visitor sur le modele
+		monPackage.eClassifiers.select{ c | c.isKindOf(EClass) }.each{e |
+		do
+			var classCourante : EClass
+			classCourante ?= e
+			if (classCourante != void)
+			then
+				// Implementation de l'interface
+				classCourante.addSuperType(visitableInterface)
+				
+				// Ajout de l'operation accept
+				var operationAccept : EOperation init classCourante.addOperation("accept", void)
+				operationAccept.addParameter("v", visitorAbstClass)
+				util.addAnnotation(operationAccept, "", "kermeta", "v.visit" + classCourante.name + "(self)")
+				
+				// Ajout de l'operation visit<Name> dans le visitor abstrait
+				var operationVisitor : EOperation init visitorAbstClass.addOperation("visit" + classCourante.name, void)
+				operationVisitor.addParameter("v", classCourante)
+				
+				// Ajout de l'operation visit<Name> dans le visitor concret
+				var operationVisitorConcrete : EOperation init concreteVisitor.addOperation("visit" + classCourante.name, void)
+				operationVisitorConcrete.addParameter("v", classCourante)
+			end
+		end
+		}
+		
+		result := monPackage
+	end
+	
+	operation creerPackage(nom : EString, parent : EPackage) : EPackage
+	is do
+		// Creation du nouveau package
+		var enfantPackage : EPackage init EPackage.new
+		enfantPackage.name := nom
+		
+		// Ajout du package à son parent
+		parent.eSubpackages.add(enfantPackage)
+		
+		// On retourne le package
+		result := enfantPackage
+	end
+	
+	operation generate_visitor(modele : EPackage, path : EString) : Void
+	is do
+		// Buffer de sortie
+		var buffer : String init ""
+		
+		// Generation de l'entête du fichier .ktm
+		buffer.append("package " + modele.name +"::visitors;\n\n")
+		buffer.append("require \"" + modele.name +".kmt\"\n")
+		buffer.append("require kermeta\n\n")
+		buffer.append("using " + modele.name +"\n\n")
+		
+		// Generation de la classe abstraite Visitor
+		buffer.append("abstract class Visitor {\n")
+		modele.eClassifiers.each{e |
+		do
+			var classCourante : EClass
+			classCourante ?= e
+			if (classCourante != void)
+			then
+				buffer.append("		operation visit" + classCourante.name + "(v : " + classCourante.name + ") : Void is abstract\n")
+			end
+		end
+		}
+		buffer.append("}\n\n")
+		
+		// Generation de l'interface Visitable
+		buffer.append("class Visitable {\n")
+		buffer.append("		operation accept(v : Visitor) : Void is abstract\n")
+		buffer.append("}\n\n")
+		
+		// Creation du fichier Tableur_visitors.kmt
+		var fichier : FileIO init FileIO.new
+		fichier.writeTextFile(path + modele.name + "_visitors.kmt" , buffer)
+	end
+	
+	operation generate_concrete_visitor(name : EString, modele : EPackage, path : EString) : Void
+	is do
+		// Buffer de sortie
+		var buffer : String init ""
+		
+		// Generation de l'entête du fichier .ktm
+		buffer.append("package "+modele.name+"::visitors::concret;\n\n")
+		buffer.append("require kermeta\n")
+		buffer.append("require \""+modele.name+"_visitors.kmt\"\n")
+		buffer.append("require \"platform:/resource/fr.istic.m2info.idm.tp1/src/kermeta/helpers/helpers/EcoreDocHelper.kmt\"\n\n")
+		buffer.append("using "+modele.name+"\n")
+		buffer.append("using "+modele.name+"::visitors\n\n")
+		
+		// Generation du contenu de la class concrete
+		buffer.append("class " + name + " inherits Visitor {\n")
+		modele.eClassifiers.each{e |
+		do
+			var classCourante : EClass
+			classCourante ?= e
+			if (classCourante != void)
+			then
+				buffer.append("		method visit" + classCourante.name + "(v : " + classCourante.name + ") : Void from Visitor\n")
+				buffer.append("		is do\n")
+				buffer.append("			stdio.writeln(\"Visiting " +  classCourante.name + "\")\n")
+				buffer.append("			v.flat(\"\")\n")
+				buffer.append("		end\n\n")
+			end
+		end
+		}
+		buffer.append("}\n\n")
+		
+		// Creation du fichier pour le visiteur concret
+		var fichier : FileIO init FileIO.new
+		fichier.writeTextFile(path + name + ".kmt" , buffer)
+	end
+	
+	operation generate_aspects(modele : EPackage, path : EString, pathFile : EString) : Void
+	is do
+		// Buffer de sortie
+		var buffer : String init ""
+		
+		// Generation de l'entête du fichier .ktm
+		buffer.append("package " + modele.name +";\n\n")
+		buffer.append("require \"" + path + "\"\n")
+		buffer.append("require \"" + modele.name + "_visitors.kmt\"\n")
+		buffer.append("require kermeta\n\n")
+		buffer.append("using " + modele.name + "::visitors\n\n")
+		
+		// Generation des aspects
+		modele.eClassifiers.each{e |
+		do
+			var classCourante : EClass
+			classCourante ?= e
+			if (classCourante != void)
+			then
+				buffer.append("aspect class " + classCourante.name + " inherits Visitable {\n")
+				buffer.append("		method accept(v : Visitor) from Visitable\n")
+				buffer.append("		is do\n")
+				buffer.append("			v.visit" + classCourante.name + "(self)\n")
+				buffer.append("		end\n")
+				buffer.append("}\n\n")
+			end
+		end
+		}
+		
+		// Creation du fichier Tableur.kmt qui declare les aspects
+		var fichier : FileIO init FileIO.new
+		fichier.writeTextFile(pathFile + modele.name + ".kmt" , buffer)
+	end
+}

@@ -1,0 +1,46 @@
+digraph g {
+	compound=true;
+#	Rend selectionnable le cadre d'un cluster
+
+	subgraph cluster_p {
+		shape=ellipse;
+		person [label="Person"];
+		moderator [label="Moderator"];
+		user [label="User"];
+		account [label="Account"];
+
+		moderator -> person;
+		user -> person;
+		user -> account;
+	}
+
+	subgraph cluster_a {
+		bid [label="Bid"];
+		auction [label="Auction"];
+		auctionstate [label="AuctionState"];
+		reserveauction [label="ReserveAuction"];
+		bulletinboard [label="BulletinBoard"];
+		message [label="Message"];
+
+		reserveauction -> auction;
+		auction -> bid;
+		auction -> auctionstate;
+		auction -> bulletinboard;
+		bulletinboard -> message;
+	}
+
+	subgraph cluster_s {
+		server [label="Server"];
+		command [label="Command"];
+		
+		server -> command;
+	}
+	
+	server -> user[color="red", lhead=cluster_p];
+	server -> auction[color="red", lhead=cluster_a];
+
+	bid -> user[color="red", lhead=cluster_p];
+	message -> user[color="red", lhead=cluster_p];
+
+	user -> bid[color="red", lhead=cluster_a];
+}

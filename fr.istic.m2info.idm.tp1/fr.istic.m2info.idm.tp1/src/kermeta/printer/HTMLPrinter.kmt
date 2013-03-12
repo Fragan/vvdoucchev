@@ -1,0 +1,135 @@
+/* $Id:$ 
+ * Creation : November 11, 2012
+ * Licence  : EPL 
+ * Copyright:
+ * Authors  : 
+ *            taira
+ */
+
+package ecore;
+
+
+require "platform:/resource/fr.istic.m2info.idm.tp1/src/kermeta/helpers/helpers/ecore_behavior.kmt" // import des getters
+require kermeta
+require "platform:/resource/fr.istic.m2info.idm.tp1/src/kermeta/helpers/helpers/EcoreUtil.kmt"
+require "platform:/resource/fr.istic.m2info.idm.tp1//src/kermeta/helpers/helpers/EcoreGenericsHelper.kmt"
+
+
+using kermeta
+using ecore
+using kermeta::standard
+using kermeta::io
+
+aspect class EClass {
+
+	operation flatHTTML(tabulation : String) : String is do
+		var res: String
+		
+		res := "<u>Hierarchy :</u>\n"
+		res := res + flatHTTML_rec(tabulation + "\t") + "\n"
+		
+		result := res
+	end
+
+	operation flatHTTML_rec(tabulation : String) : String is do
+		var superTypes : String init ""
+		
+		// On applique l'operation flat pour l'ensemble des supertypes de la classe
+		self.eSuperTypes.each { parentClass |
+		do 
+			// TODO : Attention : risque de mauvaise presentation si profondeur > 2
+		
+			superTypes := superTypes + tabulation + "<ul><li>\n"
+			superTypes := superTypes + tabulation + self.name + "\n"
+			superTypes := superTypes + tabulation + parentClass.flatHTTML_rec(tabulation + "\t")
+			superTypes := superTypes + tabulation + "</li></ul>\n"
+		end
+		}
+		
+		// Si la classe n'a pas de super type
+		if (superTypes == "")
+		then
+			superTypes := tabulation + "<ul><li>\n"
+			superTypes := superTypes + tabulation + "\t" + self.name + "\n" 
+			superTypes := superTypes + tabulation + "</li></ul>\n" 
+		end
+		
+		// On retourne le resultat
+		result := superTypes
+	end
+	
+	
+	operation shortHTML(tabulation : String) : String is do
+		var attributs : String init tabulation + "<u>Attribut :</u>\n" + tabulation + "<ul>\n"
+		var references : String init tabulation + "<u>Reference :</u>\n" + tabulation + "<ul>\n"
+		var operations : String init tabulation + "<u>Operation :</u>\n" + tabulation + "<ul>\n"
+		
+		// Liste des attributs
+		self.eAttributes.each { attributCourant |
+		do
+			attributs := attributs + tabulation + "\t<li>" + attributCourant.name + " : " + attributCourant.eAttributeType.name + "</li>\n"
+		end
+		}
+		attributs := attributs + tabulation + "</ul>\n"
+		
+		
+		
+		// Liste des references
+		self.eReferences.each{ referenceCourante |
+		do
+			// Affichage du nom et type
+			references := references + tabulation + "\t<li>" + referenceCourante.name + " : <a href=\"" + referenceCourante.eReferenceType.name + ".html\">" + referenceCourante.eReferenceType.name + "</a>"
+			
+			// Affichage des cardinalites
+			var upperBound : String init ""
+			if (referenceCourante.upperBound == -1) // ("-1" correspond a "*")
+			then
+				upperBound := "*"
+			else
+				upperBound := referenceCourante.upperBound.toString
+			end
+			references := references + " [" + referenceCourante.lowerBound.toString + ".." + upperBound.toString() + "]" + "</li>\n"
+		end
+		}
+		references := references + tabulation + "</ul>\n"
+		
+		// Liste des operations
+		self.eOperations.each{ operationCourante |
+		do
+			// Affichage du nom
+			operations := operations + tabulation + "\t<li>" + operationCourante.name
+			
+			// Liste des parametres
+			var bPremiereIteration : Boolean init true
+			operations := operations + "("
+			operationCourante.eParameters.each{ parametreCourant | 
+			do
+				// dans le cas de la premiere iteration, on n'affiche pas la virgule
+				if (bPremiereIteration)
+				then
+					bPremiereIteration := false
+				else
+					operations := operations + ", "
+				end
+				// Affichage du nom et type
+				operations := operations + parametreCourant.name + " : " + parametreCourant.eType.name
+			end
+			}
+			operations := operations + ")"
+			
+			// Affichage du type de retour
+			if (operationCourante.eType != void)
+			then
+				operations := operations + " : " + operationCourante.eType.name + "</li>\n"
+			else
+				operations := operations + " : Void" + "</li>\n"
+			end
+			
+		end
+		}
+		operations := operations + tabulation + "</ul>\n"
+		
+		// On retourne le resultat
+		result :=  attributs + references + operations
+	end
+}

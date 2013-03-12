@@ -1,0 +1,57 @@
+/* $Id:$ 
+ * Creation : November 5, 2012
+ * Licence  : EPL 
+ * Copyright:
+ * Authors  : 
+ *            taira
+ */
+@mainClass "root_package::Main"
+@mainOperation "main"
+
+
+package root_package;
+
+
+require kermeta
+require "http://www.eclipse.org/emf/2002/Ecore"
+require "helpers/helpers/ecore_behavior.kmt" // import des getters
+require "helpers/helpers/EcoreUtil.kmt"
+require "helpers/helpers/EcoreGenericsHelper.kmt"
+//require "platform:/resource/fr.istic.m2info.idm.tp1/models/spreadsheet.ecore"
+
+require "platform:/resource/fr.istic.m2info.idm.tp1/src/kermeta/generatedKMT/spreadsheet_visitors.kmt"
+require "platform:/resource/fr.istic.m2info.idm.tp1/src/kermeta/generatedKMT/spreadsheet.kmt"
+require "platform:/resource/fr.istic.m2info.idm.tp1/src/kermeta/generatedKMT/MyVisitor.kmt"
+
+using kermeta
+using EcoreUtil
+using ecore
+using kermeta::standard
+using kermeta::io
+using kermeta::persistence
+
+using spreadsheet
+using spreadsheet::visitors
+using spreadsheet::visitors::concret // MyVisitor
+
+class Main {
+	operation main() : Void is do
+	
+		var cell : Cell
+		var visitor : Visitor init MyVisitor.new
+		
+		cell := loadModelSpreadsheet()
+		
+		cell.accept(visitor)
+		cell.expression.accept(visitor)
+		
+	end
+	
+	
+	operation loadModelSpreadsheet() : Cell is do
+		var rep : Repository init EMFRepository.new
+		var res : Resource init rep.createResource("platform:/resource/fr.istic.m2info.idm.tp1/models/Cell.xmi", "platform:/resource/fr.istic.m2info.idm.tp1/models/tableur_modifie.ecore")
+		res.load()
+		result ?= res.one
+	end
+}

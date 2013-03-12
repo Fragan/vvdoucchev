@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ASCII"?>
+<spreadsheet:Cell xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:spreadsheet="spreadsheet" xsi:schemaLocation="spreadsheet tableur_modifie.ecore">
+  <expression xsi:type="spreadsheet:Value" val="21"/>
+</spreadsheet:Cell>

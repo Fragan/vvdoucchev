@@ -1,0 +1,17 @@
+*.class
+*.project
+*.settings/
+*.classpath
+**target/
+
+# Package Files #
+*.war
+*.ear
+
+.waf-*
+.lock-*
+*/target/*
+*~
+*.project
+*bin/*
+*.DS_Store

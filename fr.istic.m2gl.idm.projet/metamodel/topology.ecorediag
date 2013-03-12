@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmi:id="__y2DECjEEeKoLPpczpmyjQ" type="EcoreTools" name="topology.ecorediag" measurementUnit="Pixel">
+  <children xmi:type="notation:Node" xmi:id="_Aenj8CjFEeKoLPpczpmyjQ" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_AeoLACjFEeKoLPpczpmyjQ" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_AeoLASjFEeKoLPpczpmyjQ" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_ECmBACjFEeKoLPpczpmyjQ" type="2001">
+        <element xmi:type="ecore:EAttribute" href="topology.ecore#//Topology/neighborSize"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_ECmBASjFEeKoLPpczpmyjQ"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_AeoLAijFEeKoLPpczpmyjQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_AeoLAyjFEeKoLPpczpmyjQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_AeoLBCjFEeKoLPpczpmyjQ"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_AeoLBSjFEeKoLPpczpmyjQ" type="5002">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_AeoLBijFEeKoLPpczpmyjQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_AeoLByjFEeKoLPpczpmyjQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_AeoLCCjFEeKoLPpczpmyjQ"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_Aenj8SjFEeKoLPpczpmyjQ" fontColor="4210752" fontName="Segoe UI" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EClass" href="topology.ecore#//Topology"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Aenj8ijFEeKoLPpczpmyjQ" x="105" y="130"/>
+  </children>
+  <children xmi:type="notation:Node" xmi:id="_BpjGACjFEeKoLPpczpmyjQ" type="1001">
+    <children xmi:type="notation:Node" xmi:id="_BpjGAyjFEeKoLPpczpmyjQ" type="4001"/>
+    <children xmi:type="notation:Node" xmi:id="_BpkUICjFEeKoLPpczpmyjQ" type="5001">
+      <children xmi:type="notation:Node" xmi:id="_JyyeACjFEeKoLPpczpmyjQ" type="2001">
+        <element xmi:type="ecore:EAttribute" href="topology.ecore#//Dimension/size"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_JyyeASjFEeKoLPpczpmyjQ"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_Cxtn8CjFEeKoLPpczpmyjQ" type="2001">
+        <element xmi:type="ecore:EAttribute" href="topology.ecore#//Dimension/isCircular"/>
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_Cxtn8SjFEeKoLPpczpmyjQ"/>
+      </children>
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_BpkUISjFEeKoLPpczpmyjQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_BpkUIijFEeKoLPpczpmyjQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_BpkUIyjFEeKoLPpczpmyjQ"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_BpkUJCjFEeKoLPpczpmyjQ" type="5002">
+      <styles xmi:type="notation:DrawerStyle" xmi:id="_BpkUJSjFEeKoLPpczpmyjQ"/>
+      <styles xmi:type="notation:SortingStyle" xmi:id="_BpkUJijFEeKoLPpczpmyjQ"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_BpkUJyjFEeKoLPpczpmyjQ"/>
+    </children>
+    <styles xmi:type="notation:ShapeStyle" xmi:id="_BpjGASjFEeKoLPpczpmyjQ" fontColor="4210752" fontName="Segoe UI" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
+    <element xmi:type="ecore:EClass" href="topology.ecore#//Dimension"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_BpjGAijFEeKoLPpczpmyjQ" x="410" y="122"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="__y2DESjEEeKoLPpczpmyjQ"/>
+  <element xmi:type="ecore:EPackage" href="topology.ecore#/"/>
+  <edges xmi:type="notation:Edge" xmi:id="_MQugECjFEeKoLPpczpmyjQ" type="3002" source="_Aenj8CjFEeKoLPpczpmyjQ" target="_BpjGACjFEeKoLPpczpmyjQ">
+    <children xmi:type="notation:Node" xmi:id="_MQvHICjFEeKoLPpczpmyjQ" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_MQvHISjFEeKoLPpczpmyjQ" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_MQvHIijFEeKoLPpczpmyjQ" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_MQvHIyjFEeKoLPpczpmyjQ" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_MQugESjFEeKoLPpczpmyjQ" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_MQugEijFEeKoLPpczpmyjQ" fontColor="4210752" fontName="Segoe UI" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="topology.ecore#//Topology/dimensions"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_MQugEyjFEeKoLPpczpmyjQ" points="[68, 9, -220, 4]$[293, 30, 5, 25]"/>
+  </edges>
+</notation:Diagram>
